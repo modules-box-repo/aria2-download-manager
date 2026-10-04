@@ -1,0 +1,19 @@
+/* Multi-select mode for the download list */
+.row-check { flex: none; display: none; place-items: center; width: 22px; height: 22px; margin-top: 10px; border-radius: 7px; border: 2px solid var(--line); color: transparent; transition: background .18s ease, border-color .18s ease, color .18s ease, transform .15s ease; }
+.row-check svg { width: 14px; height: 14px; }
+body.selecting .row-check { display: grid; }
+.row[data-sel="1"] .row-check { background: var(--primary); border-color: var(--primary); color: #fff; }
+.row[data-sel="1"] { background: var(--soft); }
+.row[data-sel="1"]:hover { background: var(--soft); }
+body.selecting .row { cursor: pointer; }
+body.selecting .row-actions { display: none !important; }
+
+.selbar { position: fixed; inset: auto 0 0; z-index: 50; display: flex; align-items: center; gap: 8px; padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0, 0, 0, .12); animation: slideUp .3s cubic-bezier(.22, 1, .36, 1) both; }
+.sel-count { flex: 1; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sel-toggles { display: flex; gap: 2px; flex: none; padding-right: 6px; border-right: 1px solid var(--line); margin-right: 2px; }
+.sel-toggles .mini-btn[disabled] { opacity: .35; pointer-events: none; }
+.sel-toggles .mini-btn svg { width: 18px; height: 18px; }
+.sel-actions { display: flex; gap: 2px; }
+.sel-actions .mini-btn[disabled] { opacity: .35; pointer-events: none; }
+.sel-actions .mini-btn svg { width: 19px; height: 19px; }
+body.selecting .fab { display: none; }

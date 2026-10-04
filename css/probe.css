@@ -1,0 +1,42 @@
+/* Link check panel inside the add-download sheet */
+.probe { margin: -4px 0 12px; }
+.probe-state { display: none; align-items: center; gap: 8px; padding: 9px 11px; border-radius: 11px; font-size: 12.5px; font-weight: 600; animation: fadeUp .25s ease both; }
+.probe-state.show { display: flex; }
+.probe-state svg { width: 16px; height: 16px; flex: none; }
+.probe-state.wait { background: var(--surface-2); color: var(--muted); }
+.probe-state.wait svg { animation: spin .9s linear infinite; }
+.probe-state.ok { background: rgba(46, 158, 79, .13); color: var(--ok); }
+.probe-state.err { background: rgba(214, 48, 47, .12); color: var(--danger); }
+
+.probe-list { list-style: none; margin: 0; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; animation: fadeUp .25s ease both; }
+.probe-row { display: flex; align-items: center; gap: 9px; padding: 9px 11px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.probe-row:last-child { border-bottom: 0; }
+.probe-ic { flex: none; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--soft); color: var(--muted); }
+.probe-ic svg { width: 15px; height: 15px; }
+.probe-row.good .probe-ic { color: var(--ok); }
+.probe-row.bad .probe-ic { color: var(--danger); background: rgba(214, 48, 47, .12); }
+.probe-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.probe-name { display: block; font-size: 12.5px; font-weight: 650; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.probe-sub { display: block; font-size: 11px; line-height: 1.3; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.probe-row.bad .probe-sub { color: var(--danger); }
+.probe-size { flex: none; font-size: 11.5px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.tfile { position: relative; display: flex; align-items: center; gap: 10px; margin: -4px 0 12px; padding: 11px; border-radius: 12px; background: var(--surface-2); border: 1px dashed var(--line); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .15s ease; }
+.tfile:hover { border-color: var(--primary); background: var(--soft); }
+.tfile:active { transform: scale(.99); }
+.tfile.has { border-style: solid; border-color: var(--ok); background: rgba(46, 158, 79, .1); }
+.tfile.bad { border-style: solid; border-color: var(--danger); background: rgba(214, 48, 47, .1); }
+.tfile-ic { flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--soft); color: var(--primary); }
+.tfile.has .tfile-ic { color: var(--ok); }
+.tfile.bad .tfile-ic { color: var(--danger); }
+.tfile-ic svg { width: 17px; height: 17px; }
+.tfile-body { flex: 1; min-width: 0; }
+.tfile-body b { display: block; font-size: 12.5px; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tfile-body i { display: block; font-style: normal; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tfile input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+
+.adv-switches { margin: 2px -4px 4px; }
+.adv .field > span i { font-style: normal; font-weight: 500; opacity: .8; }
+.field > span i { font-style: normal; font-weight: 500; opacity: .75; }
+.adv-switches .set-row { padding: 8px 4px; border-bottom: 1px solid var(--line); }
+.adv-switches .set-row:last-child { border-bottom: 0; }

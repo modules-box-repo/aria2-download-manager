@@ -1,0 +1,10 @@
+id=aria2-download-manager
+name=Aria2 Download Manager
+icon=icon.jpg
+description=Interface for aria2, a lightweight multi-protocol download utility.
+author=YasserNull
+version=v1.0.0
+versionCode=1
+repository=https://github.com/modules-box-repo/aria2-download-manager
+install=setup.sh
+permission=default

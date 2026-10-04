@@ -1,0 +1,239 @@
+<!-- Aria2 Download Manager shell -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<title>Aria2 Download Manager</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/probe.css">
+<link rel="stylesheet" href="css/item.css">
+<link rel="stylesheet" href="css/select.css">
+<link rel="stylesheet" href="css/dialog.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<header class="appbar">
+<button class="icon-btn" id="drawer-btn" type="button" aria-label="Menu"></button>
+<div class="appbar-title">
+<b><span>Aria2</span> Download Manager</b>
+</div>
+<div class="appbar-actions">
+<button class="icon-btn" id="select-mode" type="button" aria-label="Select downloads"></button>
+<button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme"></button>
+<button class="icon-btn" id="open-settings" type="button" aria-label="Settings"></button>
+</div>
+</header>
+<nav class="drawer" id="drawer" aria-label="Navigation">
+<div class="drawer-logo">
+<span class="drawer-badge" id="drawer-badge"></span>
+<b>Aria2 Download Manager</b>
+</div>
+<div class="drawer-group">
+<p class="drawer-label">Downloads</p>
+<button class="drawer-item" data-filter="all" type="button"><span>All Downloads</span><i id="c-all">0</i></button>
+<button class="drawer-item" data-filter="active" type="button"><span>Active</span><i id="c-active">0</i></button>
+<button class="drawer-item" data-filter="waiting" type="button"><span>Waiting</span><i id="c-waiting">0</i></button>
+<button class="drawer-item" data-filter="paused" type="button"><span>Paused</span><i id="c-paused">0</i></button>
+<button class="drawer-item" data-filter="completed" type="button"><span>Completed</span><i id="c-completed">0</i></button>
+<button class="drawer-item" data-filter="failed" type="button"><span>Failed</span><i id="c-failed">0</i></button>
+</div>
+<div class="drawer-group">
+<p class="drawer-label">General</p>
+<button class="drawer-item" data-filter="settings" type="button"><span>Settings</span></button>
+</div>
+</nav>
+<div class="scrim" id="scrim"></div>
+<main class="view is-active" id="view-downloads">
+<div class="chips" id="chips"></div>
+<div class="search">
+<span class="search-icon" id="search-icon"></span>
+<input type="search" id="dl-search" placeholder="Search downloads" autocomplete="off">
+</div>
+<ul class="vlist" id="dl-list"></ul>
+<div class="empty hidden" id="dl-empty">
+<span class="empty-art" id="empty-art"></span>
+<h2 id="empty-title">No downloads</h2>
+<p id="empty-sub">Tap the + button and paste a link to start grabbing files.</p>
+</div>
+</main>
+<main class="view" id="view-settings">
+<section class="set-group">
+<p class="set-head">Engine status</p>
+<div class="set-row"><span>aria2 binary</span><b id="sys-version">-</b></div>
+<div class="set-row"><span>daemon</span><b id="sys-run">-</b></div>
+<div class="set-row"><span>save folder</span><b id="sys-dir">-</b></div>
+<div class="set-row"><span>completed</span><b id="sys-done">-</b></div>
+<div class="set-row"><span>server uptime</span><b id="sys-uptime">-</b></div>
+</section>
+<section class="set-group">
+<p class="set-head">Storage</p>
+<label class="set-row" for="set-dir"><span>Download folder</span><input id="set-dir" class="set-input" type="text"></label>
+</section>
+<section class="set-group">
+<p class="set-head">Speed &amp; connections</p>
+<label class="set-slider" for="set-concurrent"><span class="sl-top"><span>Parallel downloads</span><b id="sv-concurrent">3</b></span><input type="range" id="set-concurrent" min="1" max="16" value="3"></label>
+<label class="set-slider" for="set-conns"><span class="sl-top"><span>Connections per server</span><b id="sv-conns">4</b></span><input type="range" id="set-conns" min="1" max="16" value="4"></label>
+<label class="set-slider" for="set-split"><span class="sl-top"><span>Split points</span><b id="sv-split">4</b></span><input type="range" id="set-split" min="1" max="16" value="4"></label>
+<label class="set-slider" for="set-dl-limit"><span class="sl-top"><span>Download limit</span><b id="sv-dl-limit">Max</b></span><input type="range" id="set-dl-limit" min="1" max="100" value="1"></label>
+    <label class="set-slider" for="set-odl-limit"><span class="sl-top"><span>Download overall limit</span><b id="sv-odl-limit">Max</b></span><input type="range" id="set-odl-limit" min="1" max="100" value="1"></label>
+    <label class="set-slider" for="set-ul-limit"><span class="sl-top"><span>Upload limit</span><b id="sv-ul-limit">Max</b></span><input type="range" id="set-ul-limit" min="1" max="100" value="1"></label>
+    <label class="set-slider" for="set-oul-limit"><span class="sl-top"><span>Upload overall limit</span><b id="sv-oul-limit">Max</b></span><input type="range" id="set-oul-limit" min="1" max="100" value="1"></label>
+</section>
+<section class="set-group">
+<p class="set-head">Torrent</p>
+<label class="set-slider" for="set-seed"><span class="sl-top"><span>Seed ratio</span><b id="sv-seed">1</b></span><input type="range" id="set-seed" min="0" max="10" step="0.1" value="1"></label>
+</section>
+<section class="set-group">
+<p class="set-head">Files &amp; resume</p>
+<div class="set-row"><span>Resume broken downloads</span><label class="switch"><input type="checkbox" id="set-continue"><i></i></label></div>
+<div class="set-row"><span>Auto-rename conflicts</span><label class="switch"><input type="checkbox" id="set-rename"><i></i></label></div>
+<div class="set-row"><span>Overwrite existing files</span><label class="switch"><input type="checkbox" id="set-overwrite"><i></i></label></div>
+</section>
+<div class="set-actions">
+<button class="btn btn-primary" id="btn-save" type="button">Save &amp; apply</button>
+<button class="btn btn-ghost" id="btn-reset" type="button">Reset defaults</button>
+</div>
+</main>
+<button class="fab" id="fab" type="button" aria-label="Add download"></button>
+<div class="selbar hidden" id="selbar">
+  <button class="icon-btn" id="sel-close" type="button" aria-label="Exit selection"></button>
+  <span class="sel-count" id="sel-count">0 selected</span>
+  <div class="sel-toggles">
+    <button class="mini-btn" id="sel-all" type="button" title="Select all"></button>
+    <button class="mini-btn" id="sel-none" type="button" title="Clear selection"></button>
+  </div>
+  <div class="sel-actions">
+    <button class="mini-btn" id="sel-pause" type="button" title="Pause"></button>
+    <button class="mini-btn" id="sel-resume" type="button" title="Resume"></button>
+    <button class="mini-btn danger" id="sel-delete" type="button" title="Delete"></button>
+  </div>
+</div>
+<div class="sheet-wrap hidden" id="sheet-wrap">
+<div class="backdrop" data-close></div>
+<section class="sheet" role="dialog" aria-label="Add download">
+<div class="sheet-head">
+<h2>New download</h2>
+<button class="icon-btn" data-close type="button" id="sheet-close" aria-label="Close"></button>
+</div>
+<div class="sheet-body">
+<label class="field" id="links-field">
+      <span>Link</span>
+      <textarea id="add-urls" rows="3" placeholder="https://example.com/file.zip"></textarea>
+    </label>
+    <div class="probe" id="probe-box">
+      <div class="probe-state" id="probe-state" aria-live="polite"></div>
+      <ul class="probe-list hidden" id="probe-list"></ul>
+    </div>
+    <label class="tfile">
+      <span class="tfile-ic" id="tfile-ic"></span>
+      <span class="tfile-body">
+        <b id="tfile-name">Choose a torrent file</b>
+        <i id="tfile-sub"></i>
+      </span>
+      <input type="file" id="add-torrent" accept=".torrent,application/x-bittorrent">
+    </label>
+<div class="grid-2">
+<label class="field" id="name-field">
+<span>Save as (optional)</span>
+<input type="text" id="add-name" placeholder="filled from link">
+</label>
+<label class="field">
+<span>Path (optional) <i class="hidden" id="dir-hint">torrent keeps its own folder inside this</i></span>
+<input type="text" id="add-dir" value="/sdcard/Download" placeholder="/sdcard/Download" autocapitalize="off" spellcheck="false">
+</label>
+</div>
+<button class="link-btn" id="adv-toggle" type="button"></button>
+<div class="adv hidden" id="adv-box">
+      <div id="adv-http">
+        <label class="set-slider"><span class="sl-top"><span>Split points</span><b id="sv-add-split">Auto</b></span><input type="range" id="add-split" min="0" max="16" value="0"></label>
+        <label class="set-slider"><span class="sl-top"><span>Connections per server</span><b id="sv-add-conns">Auto</b></span><input type="range" id="add-conns" min="0" max="16" value="0"></label>
+      </div>
+      <div id="adv-torrent" class="hidden">
+        <label class="set-slider"><span class="sl-top"><span>Seed ratio</span><b id="sv-seed-ratio">Auto</b></span><input type="range" id="add-seed-ratio" min="0" max="10" step="0.1" value="0"></label>
+        <label class="set-slider"><span class="sl-top"><span>Seed time</span><b id="sv-seed-time">Forever</b></span><input type="range" id="add-seed-time" min="0" max="120" step="5" value="0"></label>
+        <label class="set-slider"><span class="sl-top"><span>Upload limit</span><b id="sv-add-ul-limit">Max</b></span><input type="range" id="add-ul-limit" min="1" max="100" value="1"></label>
+        <label class="set-slider"><span class="sl-top"><span>Max peers</span><b id="sv-peers">55</b></span><input type="range" id="add-peers" min="10" max="200" step="5" value="55"></label>
+        <label class="field"><span>Trackers (comma separated)</span><input type="text" id="add-trackers" placeholder="udp://tracker.example:1337/announce" autocomplete="off"></label>
+        <label class="field"><span>Listen port <i>empty lets aria2 pick</i></span><input type="number" id="add-port" min="1024" max="65535" placeholder="Auto" inputmode="numeric"></label>
+        <div class="adv-switches">
+          <div class="set-row"><span>DHT</span><label class="switch"><input type="checkbox" id="add-dht" checked><i></i></label></div>
+          <div class="set-row"><span>Peer exchange</span><label class="switch"><input type="checkbox" id="add-pex" checked><i></i></label></div>
+        </div>
+      </div>
+      <label class="set-slider"><span class="sl-top"><span>Download limit</span><b id="sv-add-limit">Max</b></span><input type="range" id="add-limit" min="1" max="100" value="1"></label>
+    </div>
+</div>
+<div class="sheet-actions">
+<button class="btn btn-ghost" id="btn-cancel" type="button">Cancel</button>
+<button class="btn btn-primary" id="btn-add" type="button" disabled>Add download</button>
+</div>
+</section>
+</div>
+<div class="sheet-wrap hidden" id="item-wrap">
+<div class="backdrop" data-close></div>
+<section class="sheet" role="dialog" aria-label="Download details">
+<div class="sheet-head">
+<div class="item-head">
+<div class="item-title">
+<b id="item-name"></b>
+<span id="item-sub"></span>
+</div>
+</div>
+<button class="icon-btn" type="button" id="item-close" aria-label="Close"></button>
+</div>
+<div class="sheet-body">
+    <div class="item-grid" id="item-grid"></div>
+<div class="set-row hidden" id="item-seed-row"><span>Sending</span><label class="switch"><input type="checkbox" id="item-seed"><i></i></label></div>
+    <button class="link-btn" id="item-adv-toggle" type="button"></button>
+    <div class="adv hidden" id="item-adv">
+<label class="field" id="item-name-field"><span>Save as</span><input type="text" id="item-out" autocomplete="off"></label>
+<label class="field" id="item-link-field"><span>Link</span><input type="text" id="item-url" autocomplete="off"></label>
+<label class="set-slider"><span class="sl-top"><span>Download limit</span><b id="item-limit-out">Max</b></span><input type="range" id="item-limit" min="1" max="100" value="1"></label>
+<div id="item-http-opts">
+<label class="set-slider"><span class="sl-top"><span>Split points</span><b id="item-split-out">Auto</b></span><input type="range" id="item-split" min="0" max="16" value="0"></label>
+<label class="set-slider"><span class="sl-top"><span>Connections per server</span><b id="item-conns-out">Auto</b></span><input type="range" id="item-conns" min="0" max="16" value="0"></label>
+</div>
+<div id="item-bt-opts" class="hidden">
+<label class="set-slider"><span class="sl-top"><span>Upload limit</span><b id="item-up-out">Max</b></span><input type="range" id="item-up" min="1" max="100" value="1"></label>
+<label class="set-slider"><span class="sl-top"><span>Seed ratio</span><b id="item-ratio-out">Auto</b></span><input type="range" id="item-ratio" min="0" max="10" step="0.1" value="0"></label>
+<label class="set-slider"><span class="sl-top"><span>Seed time</span><b id="item-time-out">Forever</b></span><input type="range" id="item-time" min="0" max="120" step="5" value="0"></label>
+<label class="set-slider"><span class="sl-top"><span>Max peers</span><b id="item-peers-out">55</b></span><input type="range" id="item-peers" min="10" max="200" step="5" value="55"></label>
+<div class="adv-switches">
+<div class="set-row"><span>DHT</span><label class="switch"><input type="checkbox" id="item-dht" checked><i></i></label></div>
+<div class="set-row"><span>Peer exchange</span><label class="switch"><input type="checkbox" id="item-pex" checked><i></i></label></div>
+</div>
+</div>
+<button class="btn btn-primary" id="item-apply" type="button">Apply changes</button>
+</div>
+</div>
+<div class="item-actions" id="item-actions"></div>
+</section>
+</div>
+<div class="dlg-wrap hidden" id="dlg-wrap">
+<div class="backdrop" id="dlg-backdrop"></div>
+<section class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+<h3 id="dlg-title">File already exists</h3>
+<p id="dlg-msg"></p>
+<div class="dlg-actions">
+<button class="btn btn-ghost" id="dlg-cancel" type="button">Cancel</button>
+<button class="btn btn-primary" id="dlg-confirm" type="button">Replace</button>
+</div>
+</section>
+</div>
+<div class="toast-wrap" id="toast-wrap"></div>
+<script src="js/icons.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/dom.js"></script>
+<script src="js/api.js"></script>
+<script src="js/speed.js"></script>
+<script src="js/probe.js"></script>
+<script src="js/item.js"></script>
+<script src="js/downloads.js"></script>
+<script src="js/select.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+/* Long-press download detail sheet */
+.item-head { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.item-title { min-width: 0; }
+.item-title b { display: block; font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-title span { display: block; font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.item-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.item-cell { padding: 9px 11px; border-radius: 11px; background: var(--surface-2); border: 1px solid var(--line); animation: fadeUp .3s ease both; }
+.item-cell span { display: block; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.item-cell b { display: block; font-size: 12.5px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#item-seed-row { min-height: 42px; margin-top: 10px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); font-weight: 650; animation: fadeUp .3s ease both; }
+#item-seed-row span { font-size: 13px; }
+
+.item-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 4px 16px calc(16px + env(safe-area-inset-bottom)); }
+.item-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 6px; border-radius: 13px; background: var(--surface); border: 1px solid var(--line); color: var(--text); font-size: 11px; font-weight: 650; text-align: center; transition: background .18s ease, color .18s ease, transform .15s ease, border-color .18s ease; animation: fadeUp .3s ease both; }
+.item-btn svg { width: 19px; height: 19px; color: var(--primary); }
+.item-btn:hover { background: var(--surface-2); transform: translateY(-2px); }
+.item-btn:active { transform: scale(.95); }
+.item-btn.danger { grid-column: 1 / -1; flex-direction: row; gap: 8px; background: rgba(214, 48, 47, .1); border-color: rgba(214, 48, 47, .3); color: var(--danger); }
+.item-btn.danger svg { color: var(--danger); }
+.item-btn[disabled] { opacity: .55; pointer-events: none; }
+#item-adv .field input, #item-adv .set-slider input { opacity: 1; }
+#item-adv input[disabled] { opacity: .5; }
+#item-apply { width: 100%; margin-top: 12px; }
