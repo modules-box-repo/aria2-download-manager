@@ -11,7 +11,7 @@ Interface for aria2, a lightweight multi-protocol download utility.
 </p>
 
 <p align="center">
-  <img src="https://github.com/modules-box-repo/img-flasher/blob/main/docs/images/screenshot0.jpg" width="30%">
-  <img src="https://github.com/modules-box-repo/img-flasher/blob/main/docs/images/screenshot1.jpg" width="30%">
-  <img src="https://github.com/modules-box-repo/img-flasher/blob/main/docs/images/screenshot2.jpg" width="30%">
+  <img src="https://github.com/modules-box-repo/aria2-download-manager/blob/main/docs/images/screenshot0.jpg" width="30%">
+  <img src="https://github.com/modules-box-repo/aria2-download-manager/blob/main/docs/images/screenshot1.jpg" width="30%">
+  <img src="https://github.com/modules-box-repo/aria2-download-manager/blob/main/docs/images/screenshot2.jpg" width="30%">
 </p>
